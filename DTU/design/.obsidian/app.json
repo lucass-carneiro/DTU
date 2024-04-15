@@ -1,0 +1,23 @@
+{
+  "livePreview": false,
+  "showLineNumber": true,
+  "spellcheck": false,
+  "newFileLocation": "current",
+  "useMarkdownLinks": true,
+  "spellcheckDictionary": [
+    "DCMU",
+    "Puer",
+    "Sanguinis",
+    "Pactum",
+    "Absconditum",
+    "Sanguinem",
+    "vampiric",
+    "Tabula",
+    "Seniorum",
+    "Lalita",
+    "existance",
+    "Ismene"
+  ],
+  "alwaysUpdateLinks": true,
+  "promptDelete": false
+}
