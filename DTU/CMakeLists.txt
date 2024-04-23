@@ -19,6 +19,7 @@ set(
   "${PROJECT_SOURCE_DIR}/include/DTU.hpp"
   "${PROJECT_SOURCE_DIR}/include/main_menu.hpp"
   "${PROJECT_SOURCE_DIR}/include/state_machine.hpp"
+  "${PROJECT_SOURCE_DIR}/include/test_state.hpp"
   "${PROJECT_SOURCE_DIR}/include/type_aliases.hpp"
   "${PROJECT_SOURCE_DIR}/include/ui.hpp"
 )
@@ -28,6 +29,7 @@ set(
   "${PROJECT_SOURCE_DIR}/src/DTU.cpp"
   "${PROJECT_SOURCE_DIR}/src/main_menu.cpp"
   "${PROJECT_SOURCE_DIR}/src/state_machine.cpp"
+  "${PROJECT_SOURCE_DIR}/src/test_state.cpp"
   "${PROJECT_SOURCE_DIR}/src/ui.cpp"
 )
 

@@ -82,11 +82,11 @@ static inline void update_background_parallax(GLFWwindow *window, float dtf, DTU
   const auto [ww, wh] = window::get_dims(window);
 
   // Background texture handles
-  static const auto handle_0{tdb.find("resources/main_menu/1.png").value_or(0)};
-  static const auto handle_1{tdb.find("resources/main_menu/2.png").value_or(0)};
-  static const auto handle_2{tdb.find("resources/main_menu/3.png").value_or(0)};
-  static const auto handle_3{tdb.find("resources/main_menu/4.png").value_or(0)};
-  static const auto handle_4{tdb.find("resources/main_menu/5.png").value_or(0)};
+  const auto handle_0{tdb.find("resources/main_menu/1.png").value_or(0)};
+  const auto handle_1{tdb.find("resources/main_menu/2.png").value_or(0)};
+  const auto handle_2{tdb.find("resources/main_menu/3.png").value_or(0)};
+  const auto handle_3{tdb.find("resources/main_menu/4.png").value_or(0)};
+  const auto handle_4{tdb.find("resources/main_menu/5.png").value_or(0)};
 
   // Background parallax layer speeds
   // Obtained from the cubic polynomial (4 + x + x^2) / 400
@@ -135,42 +135,42 @@ static void update_menu(GLFWwindow *window, float dt, DTU::tdb_t &tdb, DTU::sdb_
   using namespace surge::atom;
 
   // Texture handles
-  static const auto title_handle{tdb.find("resources/main_menu/title.png").value_or(0)};
+  const auto title_handle{tdb.find("resources/main_menu/title.png").value_or(0)};
 
-  static const auto new_game_selected_handle{
+  const auto new_game_selected_handle{
       tdb.find("resources/main_menu/main_menu_new_game_selected.png").value_or(0)};
 
-  static const auto new_game_released_handle{
+  const auto new_game_released_handle{
       tdb.find("resources/main_menu/main_menu_new_game_released.png").value_or(0)};
 
-  static const auto new_game_pressed_handle{
+  const auto new_game_pressed_handle{
       tdb.find("resources/main_menu/main_menu_new_game_pressed.png").value_or(0)};
 
-  static const auto load_game_selected_handle{
+  const auto load_game_selected_handle{
       tdb.find("resources/main_menu/main_menu_load_game_selected.png").value_or(0)};
 
-  static const auto load_game_released_handle{
+  const auto load_game_released_handle{
       tdb.find("resources/main_menu/main_menu_load_game_released.png").value_or(0)};
 
-  static const auto load_game_pressed_handle{
+  const auto load_game_pressed_handle{
       tdb.find("resources/main_menu/main_menu_load_game_pressed.png").value_or(0)};
 
-  static const auto options_selected_handle{
+  const auto options_selected_handle{
       tdb.find("resources/main_menu/main_menu_options_selected.png").value_or(0)};
 
-  static const auto options_released_handle{
+  const auto options_released_handle{
       tdb.find("resources/main_menu/main_menu_options_released.png").value_or(0)};
 
-  static const auto options_pressed_handle{
+  const auto options_pressed_handle{
       tdb.find("resources/main_menu/main_menu_options_pressed.png").value_or(0)};
 
-  static const auto exit_selected_handle{
+  const auto exit_selected_handle{
       tdb.find("resources/main_menu/main_menu_exit_selected.png").value_or(0)};
 
-  static const auto exit_released_handle{
+  const auto exit_released_handle{
       tdb.find("resources/main_menu/main_menu_exit_released.png").value_or(0)};
 
-  static const auto exit_pressed_handle{
+  const auto exit_pressed_handle{
       tdb.find("resources/main_menu/main_menu_exit_pressed.png").value_or(0)};
 
   // Position metrics

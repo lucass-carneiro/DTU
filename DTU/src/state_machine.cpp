@@ -1,6 +1,8 @@
 // clang-format off
 #include "state_machine.hpp"
+
 #include "main_menu.hpp"
+#include "test_state.hpp"
 // clang-format on
 
 #include "player/logging.hpp"
@@ -49,8 +51,7 @@ auto DTU::state_machine::load_a(tdb_t &tdb) noexcept -> std::optional<surge::err
     return {};
 
   case state::test_state:
-    // TODO
-    return {};
+    return test_state::load(tdb);
 
   case no_state:
     return {};
@@ -77,8 +78,7 @@ auto DTU::state_machine::unload_a(tdb_t &tdb) noexcept -> std::optional<surge::e
     return {};
 
   case state::test_state:
-    // TODO
-    return {};
+    return test_state::unload(tdb);
 
   case no_state:
     return {};
@@ -138,8 +138,7 @@ auto DTU::state_machine::update(GLFWwindow *window, double dt, tdb_t &tdb, sdb_t
     return {};
 
   case state::test_state:
-    // TODO
-    return {};
+    return test_state::update(window, tdb, sdb);
 
   case state::no_state:
     return {};
