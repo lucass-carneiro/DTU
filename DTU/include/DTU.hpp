@@ -29,7 +29,7 @@ SURGE_MODULE_EXPORT auto on_load(GLFWwindow *window) noexcept -> int;
 
 SURGE_MODULE_EXPORT auto on_unload(GLFWwindow *window) noexcept -> int;
 
-SURGE_MODULE_EXPORT auto draw() noexcept -> int;
+SURGE_MODULE_EXPORT auto draw(GLFWwindow *window) noexcept -> int;
 
 SURGE_MODULE_EXPORT auto update(GLFWwindow *window, double dt) noexcept -> int;
 

@@ -12,7 +12,9 @@
 namespace DTU {
 
 using state_t = surge::u32;
-enum state : surge::u32 { no_state, main_menu, new_game, count };
+enum state : surge::u32 { no_state, main_menu, new_game, test_state, count };
+
+auto state_to_str(state s) noexcept -> const char *;
 
 struct state_machine {
 
@@ -30,6 +32,11 @@ public:
 
   auto update(GLFWwindow *window, double dt, tdb_t &tdb, sdb_t &sdb, txd_t &txd) noexcept
       -> std::optional<surge::error>;
+
+#ifdef SURGE_BUILD_TYPE_Debug
+  [[nodiscard]] inline auto get_a() const noexcept -> state { return state_a; }
+  [[nodiscard]] inline auto get_b() const noexcept -> state { return state_b; }
+#endif
 };
 
 } // namespace DTU

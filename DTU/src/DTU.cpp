@@ -40,8 +40,7 @@ static DTU::cmdq_t cmdq{}; // NOLINT
 static DTU::state_machine stm{};
 
 #ifdef SURGE_BUILD_TYPE_Debug
-static std::tuple<float, float> wdims{}; // NOLINT
-static bool show_debug_window{true};     // NOLINT
+static bool show_debug_window{true}; // NOLINT
 #endif
 
 } // namespace globals
@@ -191,14 +190,14 @@ extern "C" SURGE_MODULE_EXPORT auto on_unload(GLFWwindow *window) noexcept -> in
   return 0;
 }
 
-extern "C" SURGE_MODULE_EXPORT auto draw() noexcept -> int {
+extern "C" SURGE_MODULE_EXPORT auto draw([[maybe_unused]] GLFWwindow *window) noexcept -> int {
   globals::pv_ubo.bind_to_location(2);
   globals::sdb.draw(globals::sprite_shader);
   globals::txd.txb.draw(globals::text_shader, globals::txd.draw_color);
 
   // Debug UI pass
 #ifdef SURGE_BUILD_TYPE_Debug
-  DTU::debug_window::draw(globals::wdims, globals::show_debug_window);
+  DTU::debug_window::draw(globals::show_debug_window, window, globals::tdb, globals::stm);
 #endif
 
   return 0;
@@ -225,10 +224,6 @@ extern "C" SURGE_MODULE_EXPORT auto update(GLFWwindow *window, double dt) noexce
     log_error("Unable to update current state");
     return static_cast<int>(update_result.value());
   }
-
-#ifdef SURGE_BUILD_TYPE_Debug
-  globals::wdims = surge::window::get_dims(window);
-#endif
 
   return 0;
 }

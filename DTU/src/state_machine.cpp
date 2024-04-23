@@ -5,7 +5,7 @@
 
 #include "player/logging.hpp"
 
-static inline auto state_to_str(DTU::state s) noexcept -> const char * {
+auto DTU::state_to_str(DTU::state s) noexcept -> const char * {
   using DTU::state;
 
   switch (s) {
@@ -17,6 +17,9 @@ static inline auto state_to_str(DTU::state s) noexcept -> const char * {
 
   case state::new_game:
     return "new game";
+
+  case state::test_state:
+    return "test state";
 
   case state::count:
     return "count";
@@ -45,6 +48,10 @@ auto DTU::state_machine::load_a(tdb_t &tdb) noexcept -> std::optional<surge::err
     // TODO;
     return {};
 
+  case state::test_state:
+    // TODO
+    return {};
+
   case no_state:
     return {};
 
@@ -69,6 +76,10 @@ auto DTU::state_machine::unload_a(tdb_t &tdb) noexcept -> std::optional<surge::e
     // TODO;
     return {};
 
+  case state::test_state:
+    // TODO
+    return {};
+
   case no_state:
     return {};
 
@@ -78,6 +89,7 @@ auto DTU::state_machine::unload_a(tdb_t &tdb) noexcept -> std::optional<surge::e
   default:
     return {};
   }
+
   return {};
 }
 
@@ -125,10 +137,17 @@ auto DTU::state_machine::update(GLFWwindow *window, double dt, tdb_t &tdb, sdb_t
     // TODO;
     return {};
 
+  case state::test_state:
+    // TODO
+    return {};
+
   case state::no_state:
     return {};
 
   case state::count:
+    return {};
+
+  default:
     return {};
   }
   return {};
