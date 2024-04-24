@@ -17,7 +17,7 @@ auto DTU::state_impl::test_state::load(tdb_t &tdb) noexcept -> std::optional<sur
 
   // Background texture
   create_info ci{texture_filtering::nearest, texture_wrap::clamp_to_edge, 1, true};
-  tdb.add(ci, "resources/maps/test/color0025.png");
+  tdb.add(ci, "resources/maps/test/color0000.png");
 
   return {};
 }
@@ -41,7 +41,7 @@ auto DTU::state_impl::test_state::update(GLFWwindow *window, tdb_t &tdb, sdb_t &
   const auto [ww, wh] = window::get_dims(window);
 
   // Background texture
-  const auto handle_0{tdb.find("resources/maps/test/color0025.png").value_or(0)};
+  const auto handle_0{tdb.find("resources/maps/test/color0000.png").value_or(0)};
   const auto model_0{sprite::place(glm::vec2{0.0f}, glm::vec2{ww, wh}, 0.0f)};
   sdb.add(handle_0, model_0, 1.0f);
 

@@ -90,11 +90,11 @@ static inline void update_background_parallax(GLFWwindow *window, float dtf, DTU
 
   // Background parallax layer speeds
   // Obtained from the cubic polynomial (4 + x + x^2) / 400
-  static constexpr float drift_speed_0{1.0f / 100.0f};
-  static constexpr float drift_speed_1{3.0f / 200.0f};
-  static constexpr float drift_speed_2{1.0f / 40.0f};
-  static constexpr float drift_speed_3{1.0f / 25.0f};
-  static constexpr float drift_speed_4{3.0f / 50.0f};
+  const float drift_speed_0{1.0f / 100.0f};
+  const float drift_speed_1{3.0f / 200.0f};
+  const float drift_speed_2{1.0f / 40.0f};
+  const float drift_speed_3{1.0f / 25.0f};
+  const float drift_speed_4{3.0f / 50.0f};
 
   // Background model matrices
   static auto model_0{sprite::place(glm::vec2{0.0f}, glm::vec2{2.0f * ww, wh}, 0.0f)};
