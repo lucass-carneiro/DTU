@@ -139,8 +139,39 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   message(STATUS "Generating a Debug build system")
 
   if(SURGE_COMPILER_FLAG_STYLE MATCHES "gcc")
-    target_compile_options(SurgeDTU PUBLIC -Og -g3 -ggdb3 -fno-omit-frame-pointer -Wall -Wextra -Werror -pedantic -pedantic-errors)
-    target_link_options(SurgeDTU PUBLIC -Og -g3 -ggdb3 -fno-omit-frame-pointer -rdynamic -Wall -Wextra -Werror -pedantic -pedantic-errors)
+    target_compile_options(
+      SurgeDTU
+      PUBLIC
+      -Og
+      -g3
+      -ggdb3
+      -fno-omit-frame-pointer
+      -Werror
+      -Wall
+      -Wextra
+      -Wpedantic
+      -Walloca
+      -Wcast-qual
+      -Wformat=2
+      -Wformat-security
+      -Wnull-dereference
+      -Wstack-protector
+      -Wvla
+      -Wconversion
+      -Warray-bounds
+      -Warray-bounds-pointer-arithmetic
+      -Wconditional-uninitialized
+      -Wimplicit-fallthrough
+      -Wpointer-arith
+      -Wformat-type-confusion
+      -Wfloat-equal
+      -Wassign-enum
+      -Wtautological-constant-in-range-compare
+      -Wswitch-enum
+      -Wshift-sign-overflow
+      -Wloop-analysis
+    )
+    target_link_options(SurgeDTU PUBLIC -Og -g3 -ggdb3)
   else()
     target_compile_options(SurgeDTU PUBLIC /Wall /MP /MDd)
     target_link_options(SurgeDTU PUBLIC /DEBUG:FULL)
