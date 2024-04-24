@@ -15,7 +15,7 @@ project(
 # -----------------------------------------
 
 set(
-  SURGE_MODULE_DEFAULT_HEADER_LIST
+  SURGE_MODULE_DTU_HEADER_LIST
   "${PROJECT_SOURCE_DIR}/include/DTU.hpp"
   "${PROJECT_SOURCE_DIR}/include/main_menu.hpp"
   "${PROJECT_SOURCE_DIR}/include/state_machine.hpp"
@@ -25,7 +25,7 @@ set(
 )
 
 set(
-  SURGE_MODULE_DEFAULT_SOURCE_LIST
+  SURGE_MODULE_DTU_SOURCE_LIST
   "${PROJECT_SOURCE_DIR}/src/DTU.cpp"
   "${PROJECT_SOURCE_DIR}/src/main_menu.cpp"
   "${PROJECT_SOURCE_DIR}/src/state_machine.cpp"
@@ -34,8 +34,8 @@ set(
 )
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-  list(APPEND SURGE_MODULE_DEFAULT_HEADER_LIST "${PROJECT_SOURCE_DIR}/include/debug_window.hpp")
-  list(APPEND SURGE_MODULE_DEFAULT_SOURCE_LIST "${PROJECT_SOURCE_DIR}/src/debug_window.cpp")
+  list(APPEND SURGE_MODULE_DTU_HEADER_LIST "${PROJECT_SOURCE_DIR}/include/debug_window.hpp")
+  list(APPEND SURGE_MODULE_DTU_SOURCE_LIST "${PROJECT_SOURCE_DIR}/src/debug_window.cpp")
 endif()
 
 # -----------------------------------------
@@ -55,7 +55,7 @@ add_custom_target(
 # Module Target
 # -----------------------------------------
 
-add_library(SurgeDTU MODULE ${SURGE_MODULE_DEFAULT_HEADER_LIST} ${SURGE_MODULE_DEFAULT_SOURCE_LIST})
+add_library(SurgeDTU MODULE ${SURGE_MODULE_DTU_HEADER_LIST} ${SURGE_MODULE_DTU_SOURCE_LIST})
 target_compile_features(SurgeDTU PRIVATE cxx_std_20)
 set_target_properties(SurgeDTU PROPERTIES PREFIX "")
 set_target_properties(SurgeDTU PROPERTIES OUTPUT_NAME "DTU")
