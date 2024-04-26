@@ -16,8 +16,12 @@ auto DTU::state_impl::test_state::load(tdb_t &tdb) noexcept -> std::optional<sur
   log_info("Loading test_state state");
 
   // Background texture
-  create_info ci{texture_filtering::nearest, texture_wrap::clamp_to_edge, 1, true};
-  tdb.add(ci, "resources/maps/test/color0000.png");
+  create_info ci{};
+  tdb.add(ci, "resources/maps/test/test.png");
+
+  // Character
+  ci.filtering = surge::renderer::texture_filtering::nearest;
+  tdb.add(ci, "resources/maps/test/female.png");
 
   return {};
 }
@@ -41,9 +45,15 @@ auto DTU::state_impl::test_state::update(GLFWwindow *window, tdb_t &tdb, sdb_t &
   const auto [ww, wh] = window::get_dims(window);
 
   // Background texture
-  const auto handle_0{tdb.find("resources/maps/test/color0000.png").value_or(0)};
+  const auto handle_0{tdb.find("resources/maps/test/test.png").value_or(0)};
   const auto model_0{sprite::place(glm::vec2{0.0f}, glm::vec2{ww, wh}, 0.0f)};
   sdb.add(handle_0, model_0, 1.0f);
+
+  // Character
+  const auto handle_1{tdb.find("resources/maps/test/female.png").value_or(0)};
+  const auto model_1{sprite::place(glm::vec2{ww / 2.0f - 100.0f, wh / 2.0f},
+                                   4.0f * glm::vec2{18.0f, 70.0f}, 0.1f)};
+  sdb.add(handle_1, model_1, 1.0f);
 
   return {};
 }

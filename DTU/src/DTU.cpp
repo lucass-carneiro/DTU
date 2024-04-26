@@ -137,7 +137,8 @@ extern "C" SURGE_MODULE_EXPORT auto on_load(GLFWwindow *window) noexcept -> int 
   globals::text_shader = *text_shader;
 
   // First state
-  globals::stm.push(DTU::state::main_menu);
+  // globals::stm.push(DTU::state::main_menu);
+  globals::stm.push(DTU::state::test_state);
   const auto transition_result{globals::stm.transition(globals::tdb)};
 
   if (transition_result) {
