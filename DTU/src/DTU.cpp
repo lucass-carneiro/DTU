@@ -53,6 +53,10 @@ extern "C" SURGE_MODULE_EXPORT auto on_load(GLFWwindow *window) noexcept -> int 
   using namespace surge;
   using namespace surge::atom;
 
+  // Disable alpha blending as most transparency in the game is due to pure zero alpha values, and
+  // not semi-transparency
+  renderer::disable(renderer::capability::blend);
+
   // Bind callbacks
   const auto bind_callback_stat{DTU::bind_callbacks(window)};
   if (bind_callback_stat != 0) {

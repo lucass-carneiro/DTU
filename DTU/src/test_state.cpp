@@ -55,5 +55,10 @@ auto DTU::state_impl::test_state::update(GLFWwindow *window, tdb_t &tdb, sdb_t &
                                    4.0f * glm::vec2{18.0f, 70.0f}, 0.1f)};
   sdb.add(handle_1, model_1, 1.0f);
 
+  const auto handle_2{tdb.find("resources/maps/test/female.png").value_or(0)};
+  const auto model_2{sprite::place(glm::vec2{ww / 2.0f - 100.0f, wh / 3.0f},
+                                   4.0f * glm::vec2{18.0f, 70.0f}, 0.05f)};
+  sdb.add(handle_2, model_2, 1.0f);
+
   return {};
 }
