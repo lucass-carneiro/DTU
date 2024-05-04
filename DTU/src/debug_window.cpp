@@ -27,14 +27,14 @@ void DTU::debug_window::destroy() noexcept {
   ImGui::DestroyContext();
 }
 
-void DTU::debug_window::draw(bool &show, GLFWwindow *window, const tdb_t &tdb,
-                             state_machine &stm) noexcept {
+void DTU::debug_window::draw(bool &show, GLFWwindow *window, const tdb_t &tdb, state &state_a,
+                             state &state_b) noexcept {
   if (show) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    main_window(window, tdb, stm);
+    main_window(window, tdb, state_a, state_b);
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -85,7 +85,8 @@ static void tdb_window(bool *open, const DTU::tdb_t &tdb) noexcept {
   ImGui::End();
 }
 
-static void stm_stats_window(bool *open, DTU::state_machine &stm) noexcept {
+static void stm_stats_window(bool *open, const DTU::state &state_a,
+                             const DTU::state &state_b) noexcept {
   if (!ImGui::Begin("State Machine Status", open, 0)) {
     // Early out if the window is collapsed, as an optimization.
     ImGui::End();
@@ -97,10 +98,8 @@ static void stm_stats_window(bool *open, DTU::state_machine &stm) noexcept {
                                   | ImGuiTableFlags_HighlightHoveredColumn};
 
   if (ImGui::BeginTable("stm_status_table", 3, flags)) {
-    const auto a{stm.get_a()};
-    const auto b{stm.get_b()};
-    const auto a_name{DTU::state_to_str(a)};
-    const auto b_name{DTU::state_to_str(b)};
+    const auto a_name{DTU::state_to_str(state_a)};
+    const auto b_name{DTU::state_to_str(state_b)};
 
     ImGui::TableSetupColumn("Slot");
     ImGui::TableSetupColumn("Id");
@@ -113,7 +112,7 @@ static void stm_stats_window(bool *open, DTU::state_machine &stm) noexcept {
     ImGui::Text("A");
     ImGui::TableNextColumn();
 
-    ImGui::Text("%u", a);
+    ImGui::Text("%u", state_a);
     ImGui::TableNextColumn();
 
     ImGui::Text("%s", a_name);
@@ -125,7 +124,7 @@ static void stm_stats_window(bool *open, DTU::state_machine &stm) noexcept {
     ImGui::Text("B");
     ImGui::TableNextColumn();
 
-    ImGui::Text("%u", b);
+    ImGui::Text("%u", state_b);
     ImGui::TableNextColumn();
 
     ImGui::Text("%s", b_name);
@@ -137,7 +136,7 @@ static void stm_stats_window(bool *open, DTU::state_machine &stm) noexcept {
   ImGui::End();
 }
 
-static void stm_replace_window(bool *open, DTU::state_machine &stm) noexcept {
+static void stm_replace_window(bool *open, DTU::state &state_b) noexcept {
   using namespace DTU;
 
   if (!ImGui::Begin("State Machine Replace", open, 0)) {
@@ -161,7 +160,7 @@ static void stm_replace_window(bool *open, DTU::state_machine &stm) noexcept {
       ImGui::TableNextColumn();
 
       if (ImGui::Button(state_to_str(s))) {
-        stm.push(s);
+        state_b = s;
       }
       ImGui::TableNextRow();
     }
@@ -172,8 +171,8 @@ static void stm_replace_window(bool *open, DTU::state_machine &stm) noexcept {
   ImGui::End();
 }
 
-void DTU::debug_window::main_window(GLFWwindow *window, const tdb_t &tdb,
-                                    state_machine &stm) noexcept {
+void DTU::debug_window::main_window(GLFWwindow *window, const tdb_t &tdb, state &state_a,
+                                    state &state_b) noexcept {
   static bool tdb_window_open{false};
   static bool stm_stat_window_open{false};
   static bool stm_replace_window_open{false};
@@ -206,9 +205,8 @@ void DTU::debug_window::main_window(GLFWwindow *window, const tdb_t &tdb,
       }
 
       if (ImGui::MenuItem("Reload")) {
-        const auto state_a{stm.get_a()};
         log_info("Reloading currently loaded state %s", state_to_str(state_a));
-        stm.push(state_a);
+        state_b = state_a;
       }
 
       if (ImGui::MenuItem("Replace")) {
@@ -238,10 +236,10 @@ void DTU::debug_window::main_window(GLFWwindow *window, const tdb_t &tdb,
   }
 
   if (stm_stat_window_open) {
-    stm_stats_window(&stm_stat_window_open, stm);
+    stm_stats_window(&stm_stat_window_open, state_a, state_b);
   }
 
   if (stm_replace_window_open) {
-    stm_replace_window(&stm_replace_window_open, stm);
+    stm_replace_window(&stm_replace_window_open, state_b);
   }
 }

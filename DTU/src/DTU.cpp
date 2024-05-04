@@ -13,6 +13,11 @@
 #include "player/sprite.hpp"
 #include "player/pv_ubo.hpp"
 
+#include "state_machine.hpp" // TODO: Remove
+
+#include "main_menu.hpp"
+#include "test_state.hpp"
+
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 
@@ -33,17 +38,138 @@ static surge::atom::texture::database tdb{}; // NOLINT
 static surge::atom::pv_ubo::buffer pv_ubo{}; // NOLINT
 static surge::atom::sprite::database sdb{};  // NOLINT
 
-static DTU::txd_t txd{};
+static DTU::txd_t txd{}; // NOLINT
 
-static DTU::cmdq_t cmdq{}; // NOLINT
-
-static DTU::state_machine stm{};
+static DTU::state state_a{}; // NOLINT
+static DTU::state state_b{}; // NOLINT
 
 #ifdef SURGE_BUILD_TYPE_Debug
 static bool show_debug_window{true}; // NOLINT
 #endif
 
 } // namespace globals
+
+/*
+ * State machine
+ */
+
+static auto load_state(DTU::state s) noexcept -> std::optional<surge::error> {
+  using namespace DTU;
+  using namespace DTU::state_impl;
+
+  switch (s) {
+
+  case state::main_menu:
+    return main_menu::load(globals::tdb);
+
+  case state::new_game:
+    // TODO;
+    return {};
+
+  case state::test_state:
+    return test_state::load(globals::tdb);
+
+  case no_state:
+    return {};
+
+  case count:
+    return {};
+
+  default:
+    return {};
+  }
+  return {};
+}
+
+static auto unload_state(DTU::state s) noexcept -> std::optional<surge::error> {
+  using namespace DTU;
+  using namespace DTU::state_impl;
+
+  switch (s) {
+
+  case state::main_menu:
+    return main_menu::unload(globals::tdb);
+
+  case state::new_game:
+    // TODO;
+    return {};
+
+  case state::test_state:
+    return test_state::unload(globals::tdb);
+
+  case no_state:
+    return {};
+
+  case count:
+    return {};
+
+  default:
+    return {};
+  }
+
+  return {};
+}
+
+static auto state_transition() noexcept -> std::optional<surge::error> {
+  using namespace DTU;
+  using namespace globals;
+
+  const auto a_empty_b_empty{state_a == state::no_state && state_b == state::no_state};
+  const auto a_full_b_empty{state_a != state::no_state && state_b == state::no_state};
+  const auto a_empty_b_full{state_a == state::no_state && state_b != state::no_state};
+  const auto a_full_b_full{state_a != state::no_state && state_b != state::no_state};
+
+  if (a_empty_b_empty || a_full_b_empty) {
+    return {};
+  } else if (a_empty_b_full) {
+    state_a = state_b;
+    state_b = state::no_state;
+    return load_state(globals::state_a);
+  } else if (a_full_b_full) {
+    const auto unload_result{unload_state(globals::state_a)};
+    if (unload_result) {
+      return unload_result;
+    } else {
+      state_a = state_b;
+      state_b = state::no_state;
+      return load_state(globals::state_a);
+    }
+  }
+
+  return {};
+}
+
+static auto state_update(GLFWwindow *window, double dt) noexcept -> std::optional<surge::error> {
+  using namespace DTU;
+  using namespace DTU::state_impl;
+
+  switch (globals::state_a) {
+
+  case state::main_menu:
+    return main_menu::update(window, dt, globals::tdb, globals::sdb, globals::txd);
+
+  case state::new_game:
+    // TODO;
+    return {};
+
+  case state::test_state:
+    return test_state::update(window, globals::tdb, globals::sdb);
+
+  case state::no_state:
+    return {};
+
+  case state::count:
+    return {};
+
+  default:
+    return {};
+  }
+  return {};
+}
+
+/*
+ * Module API
+ */
 
 extern "C" SURGE_MODULE_EXPORT auto on_load(GLFWwindow *window) noexcept -> int {
 #if defined(SURGE_BUILD_TYPE_Profile) && defined(SURGE_ENABLE_TRACY)
@@ -142,8 +268,8 @@ extern "C" SURGE_MODULE_EXPORT auto on_load(GLFWwindow *window) noexcept -> int 
 
   // First state
   // globals::stm.push(DTU::state::main_menu);
-  globals::stm.push(DTU::state::test_state);
-  const auto transition_result{globals::stm.transition(globals::tdb)};
+  globals::state_b = DTU::state::test_state;
+  const auto transition_result{state_transition()};
 
   if (transition_result) {
     log_error("Error loading first state");
@@ -172,7 +298,7 @@ extern "C" SURGE_MODULE_EXPORT auto on_unload(GLFWwindow *window) noexcept -> in
   DTU::debug_window::destroy();
 #endif
 
-  globals::stm.destroy(globals::tdb);
+  unload_state(globals::state_a);
 
   destroy_shader_program(globals::text_shader);
   destroy_shader_program(globals::sprite_shader);
@@ -202,7 +328,8 @@ extern "C" SURGE_MODULE_EXPORT auto draw([[maybe_unused]] GLFWwindow *window) no
 
   // Debug UI pass
 #ifdef SURGE_BUILD_TYPE_Debug
-  DTU::debug_window::draw(globals::show_debug_window, window, globals::tdb, globals::stm);
+  DTU::debug_window::draw(globals::show_debug_window, window, globals::tdb, globals::state_a,
+                          globals::state_b);
 #endif
 
   return 0;
@@ -216,14 +343,14 @@ extern "C" SURGE_MODULE_EXPORT auto update(GLFWwindow *window, double dt) noexce
   globals::txd.txb.reset();
 
   // Update states
-  const auto transition_result{globals::stm.transition(globals::tdb)};
-  const auto update_result{
-      globals::stm.update(window, dt, globals::tdb, globals::sdb, globals::txd)};
+  const auto transition_result{state_transition()};
 
   if (transition_result) {
     log_error("Unable to transition states");
     return static_cast<int>(transition_result.value());
   }
+
+  const auto update_result{state_update(window, dt)};
 
   if (update_result) {
     log_error("Unable to update current state");
