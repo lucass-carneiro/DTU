@@ -153,7 +153,7 @@ static auto state_update(GLFWwindow *window, double dt) noexcept -> std::optiona
     return {};
 
   case state::test_state:
-    return test_state::update();
+    return test_state::update(globals::tdb, globals::sdb);
 
   case state::no_state:
     return {};
@@ -373,8 +373,8 @@ extern "C" SURGE_MODULE_EXPORT auto draw([[maybe_unused]] GLFWwindow *window) no
 
   // Debug UI pass
 #ifdef SURGE_BUILD_TYPE_Debug
-  DTU::debug_window::draw(globals::show_debug_window, window, globals::tdb, globals::state_a,
-                          globals::state_b);
+  DTU::debug_window::draw(globals::show_debug_window, window, globals::tdb, globals::sdb,
+                          globals::state_a, globals::state_b);
 #endif
 
   return 0;

@@ -21,12 +21,15 @@ auto DTU::state_impl::main_menu::load(tdb_t &tdb, sdb_t &sdb) noexcept
   using surge::atom::texture::create_info;
   using surge::renderer::texture_filtering;
   using surge::renderer::texture_wrap;
+  using namespace surge;
   using namespace surge::atom;
 
   log_info("Loading main_menu state");
 
+  renderer::enable(renderer::capability::blend);
+
   tdb.reset();
-  sdb.reset();
+  sdb.reinit();
 
   // Background textures
   create_info ci{texture_filtering::nearest, texture_wrap::clamp_to_edge, 1, true};
@@ -60,7 +63,7 @@ auto DTU::state_impl::main_menu::unload(tdb_t &tdb, sdb_t &sdb) noexcept
   log_info("Unloading main_menu state");
 
   tdb.reset();
-  sdb.reset();
+  sdb.reinit();
 
   return {};
 }

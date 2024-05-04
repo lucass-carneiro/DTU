@@ -17,9 +17,10 @@ namespace DTU::debug_window {
 void create(GLFWwindow *window) noexcept;
 void destroy() noexcept;
 
-void main_window(GLFWwindow *window, const tdb_t &tdb, state &state_a, state &state_b) noexcept;
+void main_window(GLFWwindow *window, const tdb_t &tdb, const sdb_t &sdb, state &state_a,
+                 state &state_b) noexcept;
 
-void draw(bool &show, GLFWwindow *window, const tdb_t &tdb, state &state_a,
+void draw(bool &show, GLFWwindow *window, const tdb_t &tdb, const sdb_t &sdb, state &state_a,
           state &state_b) noexcept;
 
 } // namespace DTU::debug_window

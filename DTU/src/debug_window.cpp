@@ -8,8 +8,9 @@ void DTU::debug_window::create(GLFWwindow *window) noexcept {
   ImGui::CreateContext();
   /* ImGuiIO &io =  ImGui::GetIO();
   (void)io;
-   io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
-   io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
+   io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard
+  Controls io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable
+  Gamepad Controls
   */
 
   // Setup Dear ImGui style
@@ -27,14 +28,14 @@ void DTU::debug_window::destroy() noexcept {
   ImGui::DestroyContext();
 }
 
-void DTU::debug_window::draw(bool &show, GLFWwindow *window, const tdb_t &tdb, state &state_a,
-                             state &state_b) noexcept {
+void DTU::debug_window::draw(bool &show, GLFWwindow *window, const tdb_t &tdb, const sdb_t &sdb,
+                             state &state_a, state &state_b) noexcept {
   if (show) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    main_window(window, tdb, state_a, state_b);
+    main_window(window, tdb, sdb, state_a, state_b);
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -78,6 +79,77 @@ static void tdb_window(bool *open, const DTU::tdb_t &tdb) noexcept {
 
       ImGui::Text("%lu", hashes[i]);
     }
+
+    ImGui::EndTable();
+  }
+
+  ImGui::End();
+}
+
+static void sdb_window(bool *open, const DTU::sdb_t &sdb) noexcept {
+  if (!ImGui::Begin("Sprite Database", open, 0)) {
+    // Early out if the window is collapsed, as an optimization.
+    ImGui::End();
+    return;
+  }
+
+  constexpr ImGuiTableFlags flags{ImGuiTableFlags_Resizable | ImGuiTableFlags_BordersV
+                                  | ImGuiTableFlags_BordersH
+                                  | ImGuiTableFlags_HighlightHoveredColumn};
+
+  ImGui::CollapsingHeader("Texture Handles");
+
+  if (ImGui::BeginTable("sdb_table_texture_handle", 2, flags)) {
+    ImGui::TableSetupColumn("Size");
+    ImGui::TableSetupColumn("Write Buffer");
+    ImGui::TableHeadersRow();
+
+    ImGui::TableNextRow();
+    ImGui::TableNextColumn();
+
+    ImGui::Text("%lu", sdb.texture_handles.size());
+    ImGui::TableNextColumn();
+
+    ImGui::Text("%lu", sdb.texture_handles.get_write_buffer());
+    ImGui::TableNextColumn();
+
+    ImGui::EndTable();
+  }
+
+  ImGui::CollapsingHeader("Model Matrices");
+
+  if (ImGui::BeginTable("sdb_table_model_matrices", 2, flags)) {
+    ImGui::TableSetupColumn("Size");
+    ImGui::TableSetupColumn("Write Buffer");
+    ImGui::TableHeadersRow();
+
+    ImGui::TableNextRow();
+    ImGui::TableNextColumn();
+
+    ImGui::Text("%lu", sdb.models.size());
+    ImGui::TableNextColumn();
+
+    ImGui::Text("%lu", sdb.models.get_write_buffer());
+    ImGui::TableNextColumn();
+
+    ImGui::EndTable();
+  }
+
+  ImGui::CollapsingHeader("Alphas");
+
+  if (ImGui::BeginTable("sdb_table_alphas", 2, flags)) {
+    ImGui::TableSetupColumn("Size");
+    ImGui::TableSetupColumn("Write Buffer");
+    ImGui::TableHeadersRow();
+
+    ImGui::TableNextRow();
+    ImGui::TableNextColumn();
+
+    ImGui::Text("%lu", sdb.alphas.size());
+    ImGui::TableNextColumn();
+
+    ImGui::Text("%lu", sdb.alphas.get_write_buffer());
+    ImGui::TableNextColumn();
 
     ImGui::EndTable();
   }
@@ -171,9 +243,10 @@ static void stm_replace_window(bool *open, DTU::state &state_b) noexcept {
   ImGui::End();
 }
 
-void DTU::debug_window::main_window(GLFWwindow *window, const tdb_t &tdb, state &state_a,
-                                    state &state_b) noexcept {
+void DTU::debug_window::main_window(GLFWwindow *window, const tdb_t &tdb, const sdb_t &sdb,
+                                    state &state_a, state &state_b) noexcept {
   static bool tdb_window_open{false};
+  static bool sdb_window_open{false};
   static bool stm_stat_window_open{false};
   static bool stm_replace_window_open{false};
 
@@ -185,7 +258,7 @@ void DTU::debug_window::main_window(GLFWwindow *window, const tdb_t &tdb, state 
       }
 
       if (ImGui::MenuItem("Sprite Database")) {
-        // TODO
+        sdb_window_open = true;
       }
 
       if (ImGui::MenuItem("Text buffer 0")) {
@@ -233,6 +306,10 @@ void DTU::debug_window::main_window(GLFWwindow *window, const tdb_t &tdb, state 
 
   if (tdb_window_open) {
     tdb_window(&tdb_window_open, tdb);
+  }
+
+  if (sdb_window_open) {
+    sdb_window(&sdb_window_open, sdb);
   }
 
   if (stm_stat_window_open) {

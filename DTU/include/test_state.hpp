@@ -14,7 +14,7 @@ namespace DTU::state_impl::test_state {
 auto load(GLFWwindow *window, tdb_t &tdb, sdb_t &sdb) noexcept -> std::optional<surge::error>;
 auto unload(tdb_t &tdb, sdb_t &sdb) noexcept -> std::optional<surge::error>;
 
-auto update() noexcept -> std::optional<surge::error>;
+auto update(tdb_t &tdb, sdb_t &sdb) noexcept -> std::optional<surge::error>;
 void draw(sdb_t &sdb, GLuint sprite_shader) noexcept;
 
 } // namespace DTU::state_impl::test_state
