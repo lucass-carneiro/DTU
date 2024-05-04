@@ -34,9 +34,9 @@ namespace globals {
 static GLuint sprite_shader{0}; // NOLINT
 static GLuint text_shader{0};   // NOLINT
 
-static surge::atom::texture::database tdb{}; // NOLINT
-static surge::atom::pv_ubo::buffer pv_ubo{}; // NOLINT
-static surge::atom::sprite::database sdb{};  // NOLINT
+static DTU::tdb_t tdb{};      // NOLINT
+static DTU::pvubo_t pv_ubo{}; // NOLINT
+static DTU::sdb_t sdb{};      // NOLINT
 
 static DTU::txd_t txd{}; // NOLINT
 
@@ -53,21 +53,21 @@ static bool show_debug_window{true}; // NOLINT
  * State machine
  */
 
-static auto load_state(DTU::state s) noexcept -> std::optional<surge::error> {
+static auto state_load(GLFWwindow *window, DTU::state s) noexcept -> std::optional<surge::error> {
   using namespace DTU;
   using namespace DTU::state_impl;
 
   switch (s) {
 
   case state::main_menu:
-    return main_menu::load(globals::tdb);
+    return main_menu::load(globals::tdb, globals::sdb);
 
   case state::new_game:
     // TODO;
     return {};
 
   case state::test_state:
-    return test_state::load(globals::tdb);
+    return test_state::load(window, globals::tdb, globals::sdb);
 
   case no_state:
     return {};
@@ -81,21 +81,21 @@ static auto load_state(DTU::state s) noexcept -> std::optional<surge::error> {
   return {};
 }
 
-static auto unload_state(DTU::state s) noexcept -> std::optional<surge::error> {
+static auto state_unload(DTU::state s) noexcept -> std::optional<surge::error> {
   using namespace DTU;
   using namespace DTU::state_impl;
 
   switch (s) {
 
   case state::main_menu:
-    return main_menu::unload(globals::tdb);
+    return main_menu::unload(globals::tdb, globals::sdb);
 
   case state::new_game:
     // TODO;
     return {};
 
   case state::test_state:
-    return test_state::unload(globals::tdb);
+    return test_state::unload(globals::tdb, globals::sdb);
 
   case no_state:
     return {};
@@ -110,7 +110,7 @@ static auto unload_state(DTU::state s) noexcept -> std::optional<surge::error> {
   return {};
 }
 
-static auto state_transition() noexcept -> std::optional<surge::error> {
+static auto state_transition(GLFWwindow *window) noexcept -> std::optional<surge::error> {
   using namespace DTU;
   using namespace globals;
 
@@ -124,15 +124,15 @@ static auto state_transition() noexcept -> std::optional<surge::error> {
   } else if (a_empty_b_full) {
     state_a = state_b;
     state_b = state::no_state;
-    return load_state(globals::state_a);
+    return state_load(window, globals::state_a);
   } else if (a_full_b_full) {
-    const auto unload_result{unload_state(globals::state_a)};
+    const auto unload_result{state_unload(globals::state_a)};
     if (unload_result) {
       return unload_result;
     } else {
       state_a = state_b;
       state_b = state::no_state;
-      return load_state(globals::state_a);
+      return state_load(window, globals::state_a);
     }
   }
 
@@ -153,7 +153,7 @@ static auto state_update(GLFWwindow *window, double dt) noexcept -> std::optiona
     return {};
 
   case state::test_state:
-    return test_state::update(window, globals::tdb, globals::sdb);
+    return test_state::update();
 
   case state::no_state:
     return {};
@@ -167,6 +167,34 @@ static auto state_update(GLFWwindow *window, double dt) noexcept -> std::optiona
   return {};
 }
 
+static void state_draw() noexcept {
+  using namespace DTU;
+  using namespace DTU::state_impl;
+
+  switch (globals::state_a) {
+
+  case state::main_menu:
+    return main_menu::draw(globals::sdb, globals::sprite_shader);
+
+  case state::new_game:
+    // TODO;
+    return;
+
+  case state::test_state:
+    return test_state::draw(globals::sdb, globals::sprite_shader);
+
+  case state::no_state:
+    return;
+
+  case state::count:
+    return;
+
+  default:
+    return;
+  }
+  return;
+}
+
 /*
  * Module API
  */
@@ -178,10 +206,6 @@ extern "C" SURGE_MODULE_EXPORT auto on_load(GLFWwindow *window) noexcept -> int 
 
   using namespace surge;
   using namespace surge::atom;
-
-  // Disable alpha blending as most transparency in the game is due to pure zero alpha values, and
-  // not semi-transparency
-  renderer::disable(renderer::capability::blend);
 
   // Bind callbacks
   const auto bind_callback_stat{DTU::bind_callbacks(window)};
@@ -269,7 +293,7 @@ extern "C" SURGE_MODULE_EXPORT auto on_load(GLFWwindow *window) noexcept -> int 
   // First state
   // globals::stm.push(DTU::state::main_menu);
   globals::state_b = DTU::state::test_state;
-  const auto transition_result{state_transition()};
+  const auto transition_result{state_transition(window)};
 
   if (transition_result) {
     log_error("Error loading first state");
@@ -298,7 +322,7 @@ extern "C" SURGE_MODULE_EXPORT auto on_unload(GLFWwindow *window) noexcept -> in
   DTU::debug_window::destroy();
 #endif
 
-  unload_state(globals::state_a);
+  state_unload(globals::state_a);
 
   destroy_shader_program(globals::text_shader);
   destroy_shader_program(globals::sprite_shader);
@@ -321,29 +345,11 @@ extern "C" SURGE_MODULE_EXPORT auto on_unload(GLFWwindow *window) noexcept -> in
   return 0;
 }
 
-extern "C" SURGE_MODULE_EXPORT auto draw([[maybe_unused]] GLFWwindow *window) noexcept -> int {
-  globals::pv_ubo.bind_to_location(2);
-  globals::sdb.draw(globals::sprite_shader);
-  globals::txd.txb.draw(globals::text_shader, globals::txd.draw_color);
-
-  // Debug UI pass
-#ifdef SURGE_BUILD_TYPE_Debug
-  DTU::debug_window::draw(globals::show_debug_window, window, globals::tdb, globals::state_a,
-                          globals::state_b);
-#endif
-
-  return 0;
-}
-
 extern "C" SURGE_MODULE_EXPORT auto update(GLFWwindow *window, double dt) noexcept -> int {
   using std::abs;
 
-  // Clear buffers
-  globals::sdb.reset();
-  globals::txd.txb.reset();
-
   // Update states
-  const auto transition_result{state_transition()};
+  const auto transition_result{state_transition(window)};
 
   if (transition_result) {
     log_error("Unable to transition states");
@@ -356,6 +362,20 @@ extern "C" SURGE_MODULE_EXPORT auto update(GLFWwindow *window, double dt) noexce
     log_error("Unable to update current state");
     return static_cast<int>(update_result.value());
   }
+
+  return 0;
+}
+
+extern "C" SURGE_MODULE_EXPORT auto draw([[maybe_unused]] GLFWwindow *window) noexcept -> int {
+  globals::pv_ubo.bind_to_location(2);
+
+  state_draw();
+
+  // Debug UI pass
+#ifdef SURGE_BUILD_TYPE_Debug
+  DTU::debug_window::draw(globals::show_debug_window, window, globals::tdb, globals::state_a,
+                          globals::state_b);
+#endif
 
   return 0;
 }

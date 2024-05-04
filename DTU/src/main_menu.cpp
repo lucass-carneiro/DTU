@@ -12,7 +12,8 @@
 #  include <tracy/TracyOpenGL.hpp>
 #endif
 
-auto DTU::state_impl::main_menu::load(tdb_t &tdb) noexcept -> std::optional<surge::error> {
+auto DTU::state_impl::main_menu::load(tdb_t &tdb, sdb_t &sdb) noexcept
+    -> std::optional<surge::error> {
 #if defined(SURGE_BUILD_TYPE_Profile) && defined(SURGE_ENABLE_TRACY)
   ZoneScopedN("DTU::main_menu::load()");
 #endif
@@ -23,6 +24,9 @@ auto DTU::state_impl::main_menu::load(tdb_t &tdb) noexcept -> std::optional<surg
   using namespace surge::atom;
 
   log_info("Loading main_menu state");
+
+  tdb.reset();
+  sdb.reset();
 
   // Background textures
   create_info ci{texture_filtering::nearest, texture_wrap::clamp_to_edge, 1, true};
@@ -51,10 +55,12 @@ auto DTU::state_impl::main_menu::load(tdb_t &tdb) noexcept -> std::optional<surg
   return {};
 }
 
-auto DTU::state_impl::main_menu::unload(tdb_t &tdb) noexcept -> std::optional<surge::error> {
+auto DTU::state_impl::main_menu::unload(tdb_t &tdb, sdb_t &sdb) noexcept
+    -> std::optional<surge::error> {
   log_info("Unloading main_menu state");
 
   tdb.reset();
+  sdb.reset();
 
   return {};
 }
@@ -257,8 +263,15 @@ static void update_menu(GLFWwindow *window, float dt, DTU::tdb_t &tdb, DTU::sdb_
 auto DTU::state_impl::main_menu::update(GLFWwindow *window, double dt, tdb_t &tdb, sdb_t &sdb,
                                         txd_t &txd) noexcept -> std::optional<surge::error> {
   const auto dtf{static_cast<float>(dt)};
+
+  sdb.reset();
+
   update_background_parallax(window, dtf, tdb, sdb);
   update_menu(window, dtf, tdb, sdb, txd);
 
   return {};
+}
+
+void DTU::state_impl::main_menu::draw(sdb_t &sdb, GLuint sprite_shader) noexcept {
+  sdb.draw(sprite_shader);
 }

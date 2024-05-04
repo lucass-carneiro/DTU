@@ -2,6 +2,7 @@
 #define DTU_TYPE_ALIASES_HPP
 
 #include "player/container_types.hpp"
+#include "player/pv_ubo.hpp"
 #include "player/sprite.hpp"
 #include "player/text.hpp"
 #include "player/texture.hpp"
@@ -10,6 +11,8 @@ namespace DTU {
 
 using cmd_code_t = surge::u32;
 using cmdq_t = surge::deque<cmd_code_t>;
+
+using pvubo_t = surge::atom::pv_ubo::buffer;
 
 using tdb_t = surge::atom::texture::database;
 using sdb_t = surge::atom::sprite::database;
