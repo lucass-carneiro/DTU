@@ -153,7 +153,7 @@ static auto state_update(GLFWwindow *window, double dt) noexcept -> std::optiona
     return {};
 
   case state::test_state:
-    return test_state::update(globals::tdb, globals::sdb);
+    return test_state::update(window, dt, globals::sdb);
 
   case state::no_state:
     return {};
