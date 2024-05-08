@@ -21,8 +21,6 @@ auto DTU::state_impl::test_state::load(GLFWwindow *window, tdb_t &tdb, sdb_t &sd
 
   log_info("Loading test_state state");
 
-  renderer::disable(renderer::capability::blend);
-
   tdb.reset();
   sdb.reinit();
 
@@ -30,18 +28,23 @@ auto DTU::state_impl::test_state::load(GLFWwindow *window, tdb_t &tdb, sdb_t &sd
 
   // Background texture
   create_info ci{};
-  tdb.add(ci, "resources/maps/test/test.png");
-  const auto handle_0{tdb.find("resources/maps/test/test.png").value_or(0)};
-  const auto model_0{sprite::place(glm::vec2{0.0f}, glm::vec2{ww, wh}, 0.0f)};
-  sdb.add(handle_0, model_0, 1.0f);
+  tdb.add(ci, "resources/maps/test/background.png");
+  const auto bckg_handle{tdb.find("resources/maps/test/background.png").value_or(0)};
+  const auto bckg_model{sprite::place(glm::vec2{0.0f}, glm::vec2{ww, wh}, 0.0f)};
+  sdb.add(bckg_handle, bckg_model, 1.0f);
+
+  // Background depth. TODO: Temporary
+  tdb.add_openEXR(ci, "resources/maps/test/background_depth.exr");
+  const auto depth_handle{tdb.find("resources/maps/test/background_depth.exr").value_or(0)};
+  sdb.add_depth(depth_handle);
 
   // Character
   ci.filtering = texture_filtering::nearest;
   tdb.add(ci, "resources/maps/test/female.png");
-  const auto handle_1{tdb.find("resources/maps/test/female.png").value_or(0)};
-  const auto model_1{
-      sprite::place(glm::vec2{ww / 2.0f, wh / 2.0f}, 2.0f * glm::vec2{18.0f, 70.0f}, 0.1f)};
-  sdb.add(handle_1, model_1, 1.0f);
+  const auto char_handle{tdb.find("resources/maps/test/female.png").value_or(0)};
+  const auto char_model{
+      sprite::place(glm::vec2{ww / 2.0f, wh / 2.0f}, 2.0f * glm::vec2{18.0f, 70.0f}, 0.9f)};
+  sdb.add(char_handle, char_model, 1.0f);
 
   return {};
 }
