@@ -43,7 +43,7 @@ auto DTU::state_impl::test_state::load(GLFWwindow *window, tdb_t &tdb, sdb_t &sd
   tdb.add(ci, "resources/maps/test/female.png");
   const auto char_handle{tdb.find("resources/maps/test/female.png").value_or(0)};
   const auto char_model{
-      sprite::place(glm::vec2{479.0f, 345.0f}, 2.0f * glm::vec2{18.0f, 70.0f}, 0.48f)};
+      sprite::place(glm::vec2{479.0f, 345.0f}, 2.0f * glm::vec2{18.0f, 70.0f}, 0.0f)};
   sdb.add(char_handle, char_model, 1.0f);
 
   return {};
@@ -73,32 +73,31 @@ auto DTU::state_impl::test_state::update(GLFWwindow *window, double dt, sdb_t &s
   const auto dtf{static_cast<float>(dt)};
 
   if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-    sdb.translate(1, dtf * glm::vec3{2.0f, 0.0f, 0.0f});
+    sdb.translate(1, dtf * glm::vec3{2.5f, 0.0f, 0.0f});
   } else if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-    sdb.translate(1, dtf * glm::vec3{-2.0f, 0.0f, 0.0f});
+    sdb.translate(1, dtf * glm::vec3{-2.5f, 0.0f, 0.0f});
   } else if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
     sdb.translate(1, dtf * glm::vec3{0.0f, -1.0f, 0.0f});
   } else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
     sdb.translate(1, dtf * glm::vec3{0.0f, 1.0f, 0.0f});
   }
 
+  // TODO: Draft
   const auto pos{sdb.get_pos(1)};
 
   const auto y0{226.0f};
   const auto z0{0.0f};
-  const auto yf{768 - 32.0f};
+  const auto yf{768.0f - 32.0f};
   const auto zf{1.0f};
 
   auto z = [=](double y) { return z0 + (y - y0) * (z0 - zf) / (y0 - yf); };
 
   const auto z_feet{z(pos[1] + 140.0f)};
-  const auto z_head{z(pos[1])};
 
-  log_warn("\n  Pos: (%f, %f, %f)\n"
-           "  Feet: (%f, %f, %f)\n"
-           "  z head: %f\n"
-           "  z feet: %f",
-           pos[0], pos[1], pos[2], pos[0], pos[1] + 140.0f, pos[2], z_head, z_feet);
+  const auto dz{z_feet - pos[2]};
+  if (abs(dz) > 1.0e-5f) {
+    sdb.translate(1, glm::vec3{0.0f, 0.0f, dz});
+  }
 
   return {};
 }
