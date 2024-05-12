@@ -30,7 +30,7 @@ auto DTU::state_impl::test_state::load(GLFWwindow *window, tdb_t &tdb, sdb_t &sd
   create_info ci{};
   tdb.add(ci, "resources/maps/test/background.png");
   const auto bckg_handle{tdb.find("resources/maps/test/background.png").value_or(0)};
-  const auto bckg_model{sprite::place(glm::vec2{0.0f}, glm::vec2{ww, wh}, 0.0f)};
+  const auto bckg_model{sprite::place(glm::vec2{0.0f}, glm::vec2{ww, wh}, 0.1f)};
   sdb.add(bckg_handle, bckg_model, 1.0f);
 
   // Background depth. TODO: Temporary
@@ -43,11 +43,12 @@ auto DTU::state_impl::test_state::load(GLFWwindow *window, tdb_t &tdb, sdb_t &sd
   tdb.add(ci, "resources/maps/test/female.png");
   const auto char_handle{tdb.find("resources/maps/test/female.png").value_or(0)};
   const auto char_model{
-      sprite::place(glm::vec2{ww / 2.0f, wh / 2.0f}, 2.0f * glm::vec2{18.0f, 70.0f}, 0.9f)};
+      sprite::place(glm::vec2{479.0f, 345.0f}, 2.0f * glm::vec2{18.0f, 70.0f}, 0.48f)};
   sdb.add(char_handle, char_model, 1.0f);
 
   return {};
 }
+
 auto DTU::state_impl::test_state::unload(tdb_t &tdb, sdb_t &sdb) noexcept
     -> std::optional<surge::error> {
 #if defined(SURGE_BUILD_TYPE_Profile) && defined(SURGE_ENABLE_TRACY)
@@ -80,6 +81,24 @@ auto DTU::state_impl::test_state::update(GLFWwindow *window, double dt, sdb_t &s
   } else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
     sdb.translate(1, dtf * glm::vec3{0.0f, 1.0f, 0.0f});
   }
+
+  const auto pos{sdb.get_pos(1)};
+
+  const auto y0{226.0f};
+  const auto z0{0.0f};
+  const auto yf{768 - 32.0f};
+  const auto zf{1.0f};
+
+  auto z = [=](double y) { return z0 + (y - y0) * (z0 - zf) / (y0 - yf); };
+
+  const auto z_feet{z(pos[1] + 140.0f)};
+  const auto z_head{z(pos[1])};
+
+  log_warn("\n  Pos: (%f, %f, %f)\n"
+           "  Feet: (%f, %f, %f)\n"
+           "  z head: %f\n"
+           "  z feet: %f",
+           pos[0], pos[1], pos[2], pos[0], pos[1] + 140.0f, pos[2], z_head, z_feet);
 
   return {};
 }
