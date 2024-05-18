@@ -74,6 +74,11 @@ if(SURGE_COMPILER_FLAG_STYLE MATCHES "msvc")
     target_compile_options(SurgeDTU PUBLIC /utf-8)
 endif()
 
+# Disable min/max macros on msvc
+if(SURGE_COMPILER_FLAG_STYLE MATCHES "msvc")
+    target_compile_options(SurgeDTU PUBLIC /D NOMINMAX)
+endif()
+
 target_include_directories(
   SurgeDTU PUBLIC
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
