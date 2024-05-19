@@ -34,14 +34,14 @@ namespace globals {
 static GLuint sprite_shader{0}; // NOLINT
 static GLuint text_shader{0};   // NOLINT
 
-static DTU::tdb_t tdb{};      // NOLINT
-static DTU::pvubo_t pv_ubo{}; // NOLINT
-static DTU::sdb_t sdb{};      // NOLINT
+static DTU::tdb_t tdb{};        // NOLINT
+static DTU::pvubo_t pv_ubo{};   // NOLINT
+static DTU::sdb_t sdb{};        // NOLINT
 
-static DTU::txd_t txd{}; // NOLINT
+static DTU::txd_t txd{};        // NOLINT
 
-static DTU::state state_a{}; // NOLINT
-static DTU::state state_b{}; // NOLINT
+static DTU::state state_a{};    // NOLINT
+static DTU::state state_b{};    // NOLINT
 
 #ifdef SURGE_BUILD_TYPE_Debug
 static bool show_debug_window{true}; // NOLINT
@@ -245,7 +245,13 @@ extern "C" SURGE_MODULE_EXPORT auto on_load(GLFWwindow *window) noexcept -> int 
   }
 
   // Glyph Caches
-  auto gc_result{text::glyph_cache::create(globals::txd.ten.get_faces()["daveau_regular"])};
+  auto face{globals::txd.ten.get_face("daveau_regular")};
+  if (!face) {
+    log_error("Font daveau_regular not found in cache");
+    return static_cast<int>(error::freetype_null_face);
+  }
+
+  auto gc_result{text::glyph_cache::create(*face)};
   if (!gc_result) {
     log_error("Unable to create glyph cache for daveau_regular");
     return static_cast<int>(gc_result.error());
@@ -253,7 +259,13 @@ extern "C" SURGE_MODULE_EXPORT auto on_load(GLFWwindow *window) noexcept -> int 
 
   globals::txd.gc0 = *gc_result;
 
-  gc_result = text::glyph_cache::create(globals::txd.ten.get_faces()["daveau_light"]);
+  face = globals::txd.ten.get_face("daveau_light");
+  if (!face) {
+    log_error("Font daveau_light not found in cache");
+    return static_cast<int>(error::freetype_null_face);
+  }
+
+  gc_result = text::glyph_cache::create(*face);
   if (!gc_result) {
     log_error("Unable to create glyph cache for daveau_light");
     return static_cast<int>(gc_result.error());
