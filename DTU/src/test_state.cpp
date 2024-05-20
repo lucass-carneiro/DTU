@@ -26,17 +26,14 @@ auto DTU::state_impl::test_state::load(GLFWwindow *window, tdb_t &tdb, sdb_t &sd
 
   const auto [ww, wh] = window::get_dims(window);
 
-  // Background texture
+  // Background
   create_info ci{};
   tdb.add(ci, "resources/maps/test/background.png");
-  const auto bckg_handle{tdb.find("resources/maps/test/background.png").value_or(0)};
-  const auto bckg_model{sprite::place(glm::vec2{0.0f}, glm::vec2{ww, wh}, 0.1f)};
-  sdb.add(bckg_handle, bckg_model, 1.0f);
-
-  // Background depth. TODO: Temporary
   tdb.add_openEXR(ci, "resources/maps/test/background_depth.exr");
+  const auto bckg_handle{tdb.find("resources/maps/test/background.png").value_or(0)};
   const auto depth_handle{tdb.find("resources/maps/test/background_depth.exr").value_or(0)};
-  sdb.add_depth(depth_handle);
+  const auto bckg_model{sprite::place(glm::vec2{0.0f}, glm::vec2{ww, wh}, 0.0f)};
+  sdb.add_depth(bckg_handle, depth_handle, bckg_model);
 
   // Character
   ci.filtering = texture_filtering::nearest;
@@ -73,17 +70,17 @@ auto DTU::state_impl::test_state::update(GLFWwindow *window, double dt, sdb_t &s
   const auto dtf{static_cast<float>(dt)};
 
   if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-    sdb.translate(1, dtf * glm::vec3{2.5f, 0.0f, 0.0f});
+    sdb.translate(0, dtf * glm::vec3{2.5f, 0.0f, 0.0f});
   } else if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-    sdb.translate(1, dtf * glm::vec3{-2.5f, 0.0f, 0.0f});
+    sdb.translate(0, dtf * glm::vec3{-2.5f, 0.0f, 0.0f});
   } else if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-    sdb.translate(1, dtf * glm::vec3{0.0f, -1.0f, 0.0f});
+    sdb.translate(0, dtf * glm::vec3{0.0f, -1.0f, 0.0f});
   } else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-    sdb.translate(1, dtf * glm::vec3{0.0f, 1.0f, 0.0f});
+    sdb.translate(0, dtf * glm::vec3{0.0f, 1.0f, 0.0f});
   }
 
   // TODO: Draft
-  const auto pos{sdb.get_pos(1)};
+  const auto pos{sdb.get_pos(0)};
 
   const auto y0{226.0f};
   const auto z0{0.0f};
@@ -96,12 +93,10 @@ auto DTU::state_impl::test_state::update(GLFWwindow *window, double dt, sdb_t &s
 
   const auto dz{z_feet - pos[2]};
   if (abs(dz) > 1.0e-5f) {
-    sdb.translate(1, glm::vec3{0.0f, 0.0f, dz});
+    sdb.translate(0, glm::vec3{0.0f, 0.0f, dz});
   }
 
   return {};
 }
 
-void DTU::state_impl::test_state::draw(sdb_t &sdb, GLuint sprite_shader) noexcept {
-  sdb.draw(sprite_shader);
-}
+void DTU::state_impl::test_state::draw(sdb_t &sdb) noexcept { sdb.draw(); }

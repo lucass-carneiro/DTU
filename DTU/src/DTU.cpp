@@ -31,17 +31,16 @@
 
 namespace globals {
 
-static GLuint sprite_shader{0}; // NOLINT
-static GLuint text_shader{0};   // NOLINT
+static GLuint text_shader{0}; // NOLINT
 
-static DTU::tdb_t tdb{};        // NOLINT
-static DTU::pvubo_t pv_ubo{};   // NOLINT
-static DTU::sdb_t sdb{};        // NOLINT
+static DTU::tdb_t tdb{};      // NOLINT
+static DTU::pvubo_t pv_ubo{}; // NOLINT
+static DTU::sdb_t sdb{};      // NOLINT
 
-static DTU::txd_t txd{};        // NOLINT
+static DTU::txd_t txd{}; // NOLINT
 
-static DTU::state state_a{};    // NOLINT
-static DTU::state state_b{};    // NOLINT
+static DTU::state state_a{}; // NOLINT
+static DTU::state state_b{}; // NOLINT
 
 #ifdef SURGE_BUILD_TYPE_Debug
 static bool show_debug_window{true}; // NOLINT
@@ -174,14 +173,14 @@ static void state_draw() noexcept {
   switch (globals::state_a) {
 
   case state::main_menu:
-    return main_menu::draw(globals::sdb, globals::sprite_shader);
+    return main_menu::draw(globals::sdb);
 
   case state::new_game:
     // TODO;
     return;
 
   case state::test_state:
-    return test_state::draw(globals::sdb, globals::sprite_shader);
+    return test_state::draw(globals::sdb);
 
   case state::no_state:
     return;
@@ -220,7 +219,12 @@ extern "C" SURGE_MODULE_EXPORT auto on_load(GLFWwindow *window) noexcept -> int 
   globals::tdb = texture::database::create(128);
 
   // Sprite database
-  globals::sdb = sprite::database::create(128);
+  auto sdb{sprite::database::create(128)};
+  if (!sdb) {
+    log_error("Unable to create sprite database");
+    return static_cast<int>(sdb.error());
+  }
+  globals::sdb = *sdb;
 
   // Text Engine
   const auto ten_result{text::text_engine::create()};
@@ -289,14 +293,6 @@ extern "C" SURGE_MODULE_EXPORT auto on_load(GLFWwindow *window) noexcept -> int 
   globals::pv_ubo = pv_ubo::buffer::create();
   globals::pv_ubo.update_all(&projection, &view);
 
-  // Sprite Shader
-  const auto sprite_shader{
-      surge::renderer::create_shader_program("shaders/sprite.vert", "shaders/sprite.frag")};
-  if (!sprite_shader) {
-    return static_cast<int>(sprite_shader.error());
-  }
-  globals::sprite_shader = *sprite_shader;
-
   // Text shader
   const auto text_shader{
       surge::renderer::create_shader_program("shaders/text.vert", "shaders/text.frag")};
@@ -340,7 +336,6 @@ extern "C" SURGE_MODULE_EXPORT auto on_unload(GLFWwindow *window) noexcept -> in
   state_unload(globals::state_a);
 
   destroy_shader_program(globals::text_shader);
-  destroy_shader_program(globals::sprite_shader);
 
   globals::txd.txb.destroy();
   globals::txd.gc1.destroy();

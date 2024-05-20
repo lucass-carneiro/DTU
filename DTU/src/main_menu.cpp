@@ -275,6 +275,4 @@ auto DTU::state_impl::main_menu::update(GLFWwindow *window, double dt, tdb_t &td
   return {};
 }
 
-void DTU::state_impl::main_menu::draw(sdb_t &sdb, GLuint sprite_shader) noexcept {
-  sdb.draw(sprite_shader);
-}
+void DTU::state_impl::main_menu::draw(sdb_t &sdb) noexcept { sdb.draw(); }
