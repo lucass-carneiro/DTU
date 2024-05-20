@@ -37,10 +37,10 @@ static DTU::tdb_t tdb{};      // NOLINT
 static DTU::pvubo_t pv_ubo{}; // NOLINT
 static DTU::sdb_t sdb{};      // NOLINT
 
-static DTU::txd_t txd{}; // NOLINT
+static DTU::txd_t txd{};      // NOLINT
 
-static DTU::state state_a{}; // NOLINT
-static DTU::state state_b{}; // NOLINT
+static DTU::state state_a{};  // NOLINT
+static DTU::state state_b{};  // NOLINT
 
 #ifdef SURGE_BUILD_TYPE_Debug
 static bool show_debug_window{true}; // NOLINT
@@ -206,8 +206,7 @@ extern "C" SURGE_MODULE_EXPORT auto on_load(GLFWwindow *window) noexcept -> int 
   using namespace surge;
   using namespace surge::atom;
 
-  // TODO: Kepp alpha blending disabled? This means semi-transparency is off the table
-  renderer::disable(renderer::capability::blend);
+  renderer::enable(renderer::capability::blend);
 
   // Bind callbacks
   const auto bind_callback_stat{DTU::bind_callbacks(window)};

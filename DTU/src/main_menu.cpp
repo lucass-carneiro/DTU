@@ -106,11 +106,11 @@ static inline void update_background_parallax(GLFWwindow *window, float dtf, DTU
   const float drift_speed_4{3.0f / 50.0f};
 
   // Background model matrices
-  static auto model_0{sprite::place(glm::vec2{0.0f}, glm::vec2{2.0f * ww, wh}, 0.0f)};
-  static auto model_1{sprite::place(glm::vec2{0.0f}, glm::vec2{2.0f * ww, wh}, 0.1f)};
-  static auto model_2{sprite::place(glm::vec2{0.0f}, glm::vec2{2.0f * ww, wh}, 0.2f)};
-  static auto model_3{sprite::place(glm::vec2{0.0f}, glm::vec2{2.0f * ww, wh}, 0.3f)};
-  static auto model_4{sprite::place(glm::vec2{0.0f}, glm::vec2{2.0f * ww, wh}, 0.4f)};
+  static auto model_0{sprite::place(glm::vec2{0.0f}, glm::vec2{2.0f * ww, wh}, 0.1f)};
+  static auto model_1{sprite::place(glm::vec2{0.0f}, glm::vec2{2.0f * ww, wh}, 0.2f)};
+  static auto model_2{sprite::place(glm::vec2{0.0f}, glm::vec2{2.0f * ww, wh}, 0.3f)};
+  static auto model_3{sprite::place(glm::vec2{0.0f}, glm::vec2{2.0f * ww, wh}, 0.4f)};
+  static auto model_4{sprite::place(glm::vec2{0.0f}, glm::vec2{2.0f * ww, wh}, 0.5f)};
 
   // Parallax Drifts
   static float drift_0{0.0};
@@ -197,7 +197,7 @@ static void update_menu(GLFWwindow *window, float dt, DTU::tdb_t &tdb, DTU::sdb_
   const float opts_scale{(opts_proportion / 4.0f) / opts_size[1]};
   const float spacers_size{spacers_proportion / 6.0f};
 
-  const float z_pos{0.5f};
+  const float z_pos{0.6f};
 
   const glm::vec2 title_pos{(ww - title_size[0] * title_scale) / 2.0f, spacers_size};
 
