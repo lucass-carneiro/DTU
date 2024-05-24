@@ -37,10 +37,10 @@ static DTU::tdb_t tdb{};      // NOLINT
 static DTU::pvubo_t pv_ubo{}; // NOLINT
 static DTU::sdb_t sdb{};      // NOLINT
 
-static DTU::txd_t txd{};      // NOLINT
+static DTU::txd_t txd{}; // NOLINT
 
-static DTU::state state_a{};  // NOLINT
-static DTU::state state_b{};  // NOLINT
+static DTU::state state_a{}; // NOLINT
+static DTU::state state_b{}; // NOLINT
 
 #ifdef SURGE_BUILD_TYPE_Debug
 static bool show_debug_window{true}; // NOLINT
@@ -327,11 +327,6 @@ extern "C" SURGE_MODULE_EXPORT auto on_unload(GLFWwindow *window) noexcept -> in
   using namespace surge::atom;
   using namespace surge::renderer;
 
-  // Debug window
-#ifdef SURGE_BUILD_TYPE_Debug
-  DTU::debug_window::destroy();
-#endif
-
   state_unload(globals::state_a);
 
   destroy_shader_program(globals::text_shader);
@@ -350,6 +345,11 @@ extern "C" SURGE_MODULE_EXPORT auto on_unload(GLFWwindow *window) noexcept -> in
   if (unbind_callback_stat != 0) {
     return unbind_callback_stat;
   }
+
+  // Debug window
+#ifdef SURGE_BUILD_TYPE_Debug
+  DTU::debug_window::destroy();
+#endif
 
   return 0;
 }
