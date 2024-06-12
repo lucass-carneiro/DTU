@@ -7,4 +7,6 @@
     2. [Hera](characters/hera.md)
     3. [Indie](characters/indie.md)
     4. [Ismane](characters/ismane.md)
-    5. [Karan](characters/karan.md)
+    5. [Karan](characters/karan.md
+4. References
+  See: https://www.youtube.com/watch?v=hzPZznSmbao

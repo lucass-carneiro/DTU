@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "system/the_system.md",
+                "file": "index.md",
                 "mode": "source",
                 "source": true
               }
@@ -103,7 +103,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "system/the_system.md",
+                "file": "index.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -120,7 +120,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "system/the_system.md",
+                "file": "index.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -143,7 +143,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "system/the_system.md"
+                "file": "index.md"
               }
             }
           }
@@ -166,9 +166,9 @@
   },
   "active": "3d8361b39a4511b2",
   "lastOpenFiles": [
+    "system/the_system.md",
     "wiki/factions.md",
     "story/setting_and_themes.md",
-    "system/the_system.md",
     "story/main_plot.md",
     "plot_canvas/canvas.canvas",
     "system",
