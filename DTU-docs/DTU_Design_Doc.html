@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Lucas Timotheo Sanches" />
+  <title>Drizzle: The Unveiling</title>
+  <style>
+    html {
+      font-family: TeX Gyre Pagella;
+      font-size: 11pt;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: blue;
+    }
+    a:visited {
+      color: blue;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: DejaVuSansMono;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /*
+     * Custom CSS file. Override it as you like.
+     *
+     * Credits to @killercup (https://gist.github.com/killercup); Extracted from this Gist:
+     *   https://gist.github.com/killercup/5917178
+     */
+
+    html {
+        font-size: 100%;
+        overflow-y: scroll;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+    }
+
+    body {
+        color: #444;
+        font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+        font-size: 12px;
+        line-height: 1.7;
+        padding: 1em;
+        margin: auto;
+        max-width: 42em;
+        background: #fefefe;
+    }
+
+    a {
+        color: #0645ad;
+        text-decoration: none;
+    }
+
+    a:visited {
+        color: #0b0080;
+    }
+
+    a:hover {
+        color: #06e;
+    }
+
+    a:active {
+        color: #faa700;
+    }
+
+    a:focus {
+        outline: thin dotted;
+    }
+
+    *::-moz-selection {
+        background: rgba(255, 255, 0, 0.3);
+        color: #000;
+    }
+
+    *::selection {
+        background: rgba(255, 255, 0, 0.3);
+        color: #000;
+    }
+
+    a::-moz-selection {
+        background: rgba(255, 255, 0, 0.3);
+        color: #0645ad;
+    }
+
+    a::selection {
+        background: rgba(255, 255, 0, 0.3);
+        color: #0645ad;
+    }
+
+    p {
+        margin: 1em 0;
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: #111;
+        line-height: 125%;
+        margin-top: 2em;
+        font-weight: normal;
+    }
+
+    h4,
+    h5,
+    h6 {
+        font-weight: bold;
+    }
+
+    h1 {
+        font-size: 2.5em;
+    }
+
+    h2 {
+        font-size: 2em;
+    }
+
+    h3 {
+        font-size: 1.5em;
+    }
+
+    h4 {
+        font-size: 1.2em;
+    }
+
+    h5 {
+        font-size: 1em;
+    }
+
+    h6 {
+        font-size: 0.9em;
+    }
+
+    blockquote {
+        color: #666666;
+        margin: 0;
+        padding-left: 3em;
+        border-left: 0.5em #EEE solid;
+    }
+
+    hr {
+        display: block;
+        height: 2px;
+        border: 0;
+        border-top: 1px solid #aaa;
+        border-bottom: 1px solid #eee;
+        margin: 1em 0;
+        padding: 0;
+    }
+
+    pre,
+    code,
+    kbd,
+    samp {
+        color: #000;
+        font-family: monospace, monospace;
+        _font-family: 'courier new', monospace;
+        font-size: 0.98em;
+    }
+
+    pre {
+        white-space: pre;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    b,
+    strong {
+        font-weight: bold;
+    }
+
+    dfn {
+        font-style: italic;
+    }
+
+    ins {
+        background: #ff9;
+        color: #000;
+        text-decoration: none;
+    }
+
+    mark {
+        background: #ff0;
+        color: #000;
+        font-style: italic;
+        font-weight: bold;
+    }
+
+    sub,
+    sup {
+        font-size: 75%;
+        line-height: 0;
+        position: relative;
+        vertical-align: baseline;
+    }
+
+    sup {
+        top: -0.5em;
+    }
+
+    sub {
+        bottom: -0.25em;
+    }
+
+    ul,
+    ol {
+        margin: 1em 0;
+        padding: 0 0 0 2em;
+    }
+
+    li p:last-child {
+        margin-bottom: 0;
+    }
+
+    ul ul,
+    ol ol {
+        margin: .3em 0;
+    }
+
+    dl {
+        margin-bottom: 1em;
+    }
+
+    dt {
+        font-weight: bold;
+        margin-bottom: .8em;
+    }
+
+    dd {
+        margin: 0 0 .8em 2em;
+    }
+
+    dd:last-child {
+        margin-bottom: 0;
+    }
+
+    img {
+        border: 0;
+        -ms-interpolation-mode: bicubic;
+        vertical-align: middle;
+    }
+
+    figure {
+        display: block;
+        text-align: center;
+        margin: 1em 0;
+    }
+
+    figure img {
+        border: none;
+        margin: 0 auto;
+    }
+
+    figcaption {
+        font-size: 0.8em;
+        font-style: italic;
+        margin: 0 0 .8em;
+    }
+
+    table {
+        margin-bottom: 2em;
+        border-bottom: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-spacing: 0;
+        border-collapse: collapse;
+    }
+
+    table th {
+        padding: .2em 1em;
+        background-color: #eee;
+        border-top: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+    }
+
+    table td {
+        padding: .2em 1em;
+        border-top: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+        vertical-align: top;
+    }
+
+    .author {
+        font-size: 1.2em;
+        text-align: center;
+    }
+
+    @media only screen and (min-width: 480px) {
+        body {
+            font-size: 14px;
+        }
+    }
+
+    @media only screen and (min-width: 768px) {
+        body {
+            font-size: 16px;
+        }
+    }
+
+    @media print {
+        * {
+            background: transparent !important;
+            color: black !important;
+            filter: none !important;
+            -ms-filter: none !important;
+        }
+        body {
+            font-size: 12pt;
+            max-width: 100%;
+        }
+        a,
+        a:visited {
+            text-decoration: underline;
+        }
+        hr {
+            height: 1px;
+            border: 0;
+            border-bottom: 1px solid black;
+        }
+        a[href]:after {
+            content: " (" attr(href) ")";
+        }
+        abbr[title]:after {
+            content: " (" attr(title) ")";
+        }
+        .ir a:after,
+        a[href^="javascript:"]:after,
+        a[href^="#"]:after {
+            content: "";
+        }
+        pre,
+        blockquote {
+            border: 1px solid #999;
+            padding-right: 1em;
+            page-break-inside: avoid;
+        }
+        tr,
+        img {
+            page-break-inside: avoid;
+        }
+        img {
+            max-width: 100% !important;
+        }
+        @page :left {
+            margin: 15mm 20mm 15mm 10mm;
+        }
+        @page :right {
+            margin: 15mm 10mm 15mm 20mm;
+        }
+        p,
+        h2,
+        h3 {
+            orphans: 3;
+            widows: 3;
+        }
+        h2,
+        h3 {
+            page-break-after: avoid;
+        }
+    }  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Drizzle: The Unveiling</h1>
+<p class="subtitle">A Late Stage Capitalism Detective Role Playing
+Game</p>
+<p class="author">Lucas Timotheo Sanches</p>
+</header>
+<nav id="TOC" role="doc-toc">
+
+</nav>
+<h1 id="introduction-and-overview">Introduction and Overview</h1>
+<h2 id="summary">Summary</h2>
+<p>“Drizzle: The Unveiling” (DTU) is a CRPG where you control a young
+detective with paranormal abilities attempting to solve a crime in their
+university campus. In order to do that, players will explore the college
+campus, consisting of several environments, where they will find clues
+and suspects. Players interact with the world by collecting objects,
+inspecting physical and environmental clues and talking to NPCs. Once
+enough clues are collected, players can form conclusions and theories
+about their investigation in their Mind Palace. The game will not stop
+the player from forming wrong conclusions, nor will let the player know
+in advance which of their actions have long term consequences. This is
+intended to keep the player engaged and increase replayability.</p>
+<p>Being a CRPG, players are able to create different character builds
+with different skills. Players will be able to choose from mental,
+physical, social and paranormal skills to create a unique detective
+avatar that allows for greater role playing. The game supports these
+choices by making sure that all puzzles and challenges presented to the
+player are solvable in different ways. Player choices also play an
+important role in the development of the story. Choices are made through
+dialogue with NPCs and interactions with the world.</p>
+<h2 id="inspirations">Inspirations</h2>
+<ul>
+<li>“Vampire: The Masquerade: Bloodlines”: Dark urban and paranormal
+gameplay, with social commentary. Large degree of player choice and
+reactivity.</li>
+<li>“Disco Elysium”: Detective CRPG with stellar writing and
+dialogue/skills mechanics.</li>
+<li>“Sherlock Holmes: Crimes &amp; Punishments”: Detective adventure
+game, where players can form conclusions from their clues and choose
+what to do with their conclusions.</li>
+<li>“Planescape Torment”: Isometric style with “painted on” backgrounds.
+Stellar writing. Large degree of player choice and reactivity.</li>
+<li>“Kathy Rain: A detective is born”: P&amp;C Adventure featuring a
+young quirky detective investigating a paranormal mystery.</li>
+<li>“The Blackwell series”: Another P&amp;C Adventure featuring
+paranormal investigation.</li>
+</ul>
+<h2 id="player-experience">Player experience</h2>
+<p>When playing “Drizzle: The Unveiling”, players are expected to be
+mindful of their surroundings. Environments and NPCs contain clues, but
+getting to these clues may not always be straightforward. NPCs may lie,
+important environmental clues can be missed (or inaccessible due to lack
+of specific character skills). It will be important for players to
+reflect upon the events of the story during gameplay. The game should
+provide a sense of mystery intrigue, darkness and anxiety.</p>
+<h2 id="platform-and-software">Platform and Software</h2>
+<p>DTU will be a PC game, releasing for Windows and Linux. MacOS and
+mobile support may be considered in the future. The game will be
+developed on the custom SURGE engine. SURGE is a cross-platform (Windows
+and Linux) with custom OpenGL graphics abstractions. Vulkan support is
+planned, but may not be available by the time the game is released, thus
+the main render backend target is OpenGL.</p>
+<h2 id="genre">Genre</h2>
+<p>As previously stated, DTU is a detective CRPG with Dark Urban Fantasy
+and Horror elements and puzzles.</p>
+<h2 id="target-audience">Target audience</h2>
+<p>The ideal or typical DTU player is a classic CRPG fan who likes games
+such as BG3, VTMB, Disco Elysium, Planescape Torment, Fallout (1 and 2).
+As DTU is not heavily focused on tactical combat, as for instance B3 or
+Fallout, adventure game players with a taste for mysteries and puzzles
+may also enjoy the game, especially classic and modern Adventure Game
+fans. The game provides social commentary on modern western society as
+experienced by Millennials and Gen Zs, thus attracting these audiences
+with greater probability than other demographics or age ranges. This
+does not mean the game is not made for these audiences. Being an RPG
+featuring modern society elements, DTU will feature gender sex and
+pronouns on character creation, facilitating the Role Playing experience
+of these demographics. While some may be put off by this decision, this
+should not be considered to be “pandering”, but merely a tool to give
+expression to those who wish to have it, while also being a thematically
+relevant element to the game’s narrative.</p>
+<h1 id="gameplay-and-concept">Gameplay and Concept</h1>
+<h2 id="objectives">Objectives</h2>
+<p>The main objective of DTU will be to reach its narrative conclusion.
+In order to do that, players must obtain clues. Clues are obtained by
+investigating the physical environment and talking to NPCs.</p>
+<h1 id="mechanics">Mechanics</h1>
+<h1 id="overview">Overview</h1>
+<h1 id="game-world">Game World</h1>
+<h1 id="characters-and-opponents">Characters and Opponents</h1>
+<h1 id="levels">Levels</h1>
+<h1 id="user-interface">User Interface</h1>
+<h1 id="feedback-for-the-player">Feedback for the player</h1>
+<h1 id="deployment">Deployment</h1>
+<h1 id="development">Development</h1>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a href="https://tinyurl.com/Full-GDD-Template">Full GDD
+Template</a></li>
+<li><a href="https://tinyurl.com/Pozefsky-GDD">Pozefsky Template
+GDD</a></li>
+<li><a href="https://www.youtube.com/watch?v=hzPZznSmbao">GDD
+video</a></li>
+<li><a href="https://tinyurl.com/One-Page-GDD">One-Page
+Template</a></li>
+<li><a href="https://tinyurl.com/Blank-GDD">Alt Blank GDD
+Template</a></li>
+<li><a href="https://tinyurl.com/Mass-Flux-GDD">Mass Flux GDD</a></li>
+<li><a href="https://tinyurl.com/Double-Coconut-GDD">Double Coconut
+GDD</a></li>
+</ol>
+</body>
+</html>

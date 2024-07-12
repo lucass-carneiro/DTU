@@ -1,0 +1,42 @@
+---
+title: "Drizzle: The Unveiling"
+subtitle: A Late Stage Capitalism Detective Role Playing Game
+
+author: Lucas Timotheo Sanches
+
+date: \today
+
+papersize: A4
+fontsize: 11pt
+documentclass: book
+
+lang: en-US
+mainlang: english
+otherlang: english
+
+colorlinks: true
+linkcolor: blue
+filecolor: blue
+citecolor: blue
+urlcolor: blue
+toccolor: blue
+
+numbersections: true
+toc: true
+
+mainfont: TeX Gyre Pagella
+mathfont: TeX Gyre Pagella Math
+sansfont: DejaVuSans
+monofont: DejaVuSansMono
+
+geometry:
+  - top=30mm
+  - left=20mm
+  - heightrounded
+
+Filter preferences:
+ - pandoc-crossref
+
+linkReferences: true
+---
+
