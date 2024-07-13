@@ -101,7 +101,6 @@ def main(args):
     chapters = [
         "chapters/intro.md",
         "chapters/gameplay.md",
-        "chapters/mechanics.md",
         "chapters/story.md",
         "chapters/world.md",
         "chapters/characters.md",
