@@ -31,7 +31,21 @@ The DTU player character is a college freshman, recently arrived in Drizzle City
 
 ### Resistances
 
+| Resistance | What it Represents | When to take damage |
+|------------|--------------------|---------------------|
+| Mental     | Represents your overall mental acuity and capacities. |  When failing an attempt to solve a puzzle, to use logic and reasoning, when reaching a wrong conclusion or when formulating a false theory. |
+| Social | Represents your overall social health and standing in social groups. | When upsetting or angering people, when pushing them too far or doing actions that make you lose your standing with social groups or individuals. |
+| Magical | Represents your overall capacity of using your supernatural powers | When exerting your magical power.|
+
 ### Advancement
+
+These are the actions that lead the players to advance. Advancing means gaining a skill point, which can be used to buy one of the skills available to the player.
+
+| Category | Requirements | Rewards |
+|----------|--------------|---------|
+| Small | Uncover a small clue. Extract a minor piece of information from an NPC | 1 point |
+| Medium | Uncover an important clue. Extract an important piece of information from an NPC | 3 points |
+| Large | Uncover a key piece of information. Extract key information from an NPC. Achieve a breakthrough in the case | 5 points |
 
 ### Skills and Domains
 
