@@ -37,6 +37,8 @@ The DTU player character is a college freshman, recently arrived in Drizzle City
 | Social | Represents your overall social health and standing in social groups. | When upsetting or angering people, when pushing them too far or doing actions that make you lose your standing with social groups or individuals. |
 | Magical | Represents your overall capacity of using your supernatural powers | When exerting your magical power.|
 
+In addition to these situations, whenever the player uses a skill and fails, mental stress is taken as well as stress in the relevant category of the failed skill. For example: when failing to convince a suspect to give up information, the player will take both Mental and Social stresses, depending on the magnitude of the failure.
+
 ### Advancement
 
 These are the actions that lead the players to advance. Advancing means gaining a skill point, which can be used to buy one of the skills available to the player.
