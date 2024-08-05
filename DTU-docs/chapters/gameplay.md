@@ -1,8 +1,8 @@
-# Gameplay and Concept
+# Gameplay
 
 ## Objectives
 
-The main objective of DTU will be to reach its narrative conclusion, which means to solve (or not) the mystery. In order to do that, players must obtain clues. Clues are obtained by investigating the physical environment and talking to NPCs. Once the player is ready they can form a conclusion and accuse one of the suspects. This accusation can be met with approval or disapproval by the NPCs, producing a number of different endings.
+The main objective of DTU will be to reach its narrative conclusion, which means to solve (or not) the mystery. In order to do that, players must obtain clues. Clues are obtained by investigating the physical environment and talking to NPCs. Once the player is ready they can form a conclusion. Conclusions unlock new dialogue options, new clues or new locations. The narrative conclusion will take the various player-NPC interactions into account by providing a summary of the consequences of their action (Tim Cane style end slides)
 
 ## Core Loop
 
@@ -13,31 +13,33 @@ During any given time, a DTU player will be doing one of the following
 3. Talking to the NPCs at a location.
 4. Connecting clues to form new thoughts and conclusions in their Mind Palace.
 
-## Themes
-
-A few motifs and concepts that permeate the game (literal or metaphorical)
-
-- Mistrust
-- Anxiety
-- Uncertainty about the future
-
 ## Primary mechanics
 
 DTU is an RPG. The underlying system mechanics will be derived from the [Resistance Toolbox](https://www.drivethrurpg.com/en/product/254150), by Rowan Rook and Deckard. This makes DTU a Sparked By the Resistance game. The Toolbox will be used to create the core RPG mechanics underlying the investigative possibilities of the game (clue inspection and NPC interaction)
 
-### The Player
-
-The DTU player character is a college freshman, recently arrived in Drizzle City, who discovers their paranormal abilities when a sinister crime has shaken campus life to its core. The player is driven to investigate this crime as it is closely related to the origin of their powers.
-
 ### Resistances
 
-| Resistance | What it Represents | When to take damage |
-|------------|--------------------|---------------------|
-| Mental     | Represents your overall mental acuity and capacities. |  When failing an attempt to solve a puzzle, to use logic and reasoning, when reaching a wrong conclusion or when formulating a false theory. |
-| Social | Represents your overall social health and standing in social groups. | When upsetting or angering people, when pushing them too far or doing actions that make you lose your standing with social groups or individuals. |
-| Magical | Represents your overall capacity of using your supernatural powers | When exerting your magical power.|
+These are the resistances (according to the Resistance Toolbox) that the DTU PC will have:
 
-In addition to these situations, whenever the player uses a skill and fails, mental stress is taken as well as stress in the relevant category of the failed skill. For example: when failing to convince a suspect to give up information, the player will take both Mental and Social stresses, depending on the magnitude of the failure.
+#### Mind
+
+**Represents:**
+**Damaged when:**
+
+#### Body
+
+**Represents:**
+**Damaged when:**
+
+#### People
+
+**Represents:**
+**Damaged when:**
+
+#### Blood
+
+**Represents:**
+**Damaged when:**
 
 ### Advancement
 

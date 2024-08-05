@@ -36,6 +36,7 @@ def compile_pdf(output_name, chapters):
         "--template=templates/pdf.latex",
         "--metadata-file=metadata.yaml",
         "--filter=pandoc-crossref",
+        "--toc",
     ]
 
     command = pdf_command + chapters
@@ -60,6 +61,7 @@ def compile_ebook(output_name, chapters):
         f"--epub-cover-image={cover_image}",
         "--metadata-file=metadata.yaml",
         "--filter=pandoc-crossref",
+        "--toc",
     ]
 
     command = ebook_command + chapters
@@ -85,6 +87,7 @@ def compile_html(output_name, chapters):
         "--metadata-file=metadata.yaml",
         "--webtex",
         "--filter=pandoc-crossref",
+        "--toc",
     ]
 
     command = html_command + chapters
@@ -100,15 +103,8 @@ def main(args):
 
     chapters = [
         "chapters/intro.md",
+        "chapters/design_pillars.md",
         "chapters/gameplay.md",
-        "chapters/story.md",
-        "chapters/world.md",
-        "chapters/characters.md",
-        "chapters/levels.md",
-        "chapters/user_interface.md",
-        "chapters/feedback.md",
-        "chapters/deployment.md",
-        "chapters/development.md",
         "chapters/references.md",
     ]
 
