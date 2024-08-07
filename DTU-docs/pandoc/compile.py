@@ -1,7 +1,7 @@
 """Compiles the GDD using pandoc.
 
 Usage:
-  compile.py [--no-pdf] [--ebook] [--html]
+  compile.py <target-name>...
   compile.py (-h | --help)
   compile.py --version
 
@@ -33,7 +33,7 @@ def compile_pdf(output_name, chapters):
         "-o",
         pdf_name,
         "--pdf-engine=lualatex",
-        "--template=templates/pdf.latex",
+        #"--template=templates/pdf.latex",
         "--metadata-file=metadata.yaml",
         "--filter=pandoc-crossref",
         "--toc",
@@ -51,7 +51,7 @@ def compile_ebook(output_name, chapters):
     print("Compiling ebook")
 
     ebook_name = f"{output_name}.epub"
-    cover_image = os.path.join("images", "cover.png")
+    cover_image = os.path.join("..", "images", "cover.png")
 
     ebook_command = [
         "pandoc",
@@ -102,22 +102,21 @@ def main(args):
     output_name = "DTU_Design_Doc"
 
     chapters = [
-        "chapters/intro.md",
-        "chapters/design_pillars.md",
-        "chapters/gameplay.md",
-        "chapters/references.md",
+        os.path.join("..", "gdd_chapters", chapter_name)
+        for chapter_name in os.listdir(os.path.join("..", "gdd_chapters"))
     ]
 
     procs = []
 
-    if args["--no-pdf"] is False:
-        procs.append(compile_pdf(output_name, chapters))
-
-    if args["--ebook"]:
-        procs.append(compile_ebook(output_name, chapters))
-
-    if args["--html"]:
-        procs.append(compile_html(output_name, chapters))
+    for target_name in args["<target-name>"]:
+        if target_name == "pdf":
+            procs.append(compile_pdf(output_name, chapters))
+        elif target_name == "epub":
+            procs.append(compile_ebook(output_name, chapters))
+        elif target_name == "html":
+            procs.append(compile_html(output_name, chapters))
+        else:
+            print(f"Unrecognized target: {target_name}. Ignoring")
 
     for proc in procs:
         proc.wait()
