@@ -21,8 +21,17 @@ Players are free to name their character however they want. In this section, pla
 We will have 3 male and female avatars that players will be able to choose from. This limits the amount of art we need to produce for the game.
 
 ### Skills
+Each skill has 3 levels with associated numeric values:
 
-Players get TODO points to spend while choosing skills. Each skill has 3 levels: low, medium and high. Each level adds `1d10` to **PC** rolls
+| Level | Description |
+|:---:|:---:|
+| 0 | Bad |
+| 1 | Average |
+| 2 | Good |
+
+When creating a character, all skills start at level 0. Players get additional 9 *Character points* to spend on skills (see [Advancement](#Advancement) for more details).
+
+The following is a table of skills and skill descriptions in the game
 
 | Skill | Description |
 |:---:|:---:|
@@ -39,7 +48,7 @@ Players get TODO points to spend while choosing skills. Each skill has 3 levels:
 
 ### Backgrounds
 
-Backgrounds are specialized things that characters did before becoming vampires. Mechanically, these are *domains*, as described in the Resistance Toolbox. They add `1d10` when characters perform actions that fall under their broad category. They can also be relevant during story moments.
+Backgrounds are specialized things that characters did before becoming vampires. Mechanically, these are *domains*, as described in the Resistance Toolbox. They can also be relevant during story moments.
 
 | Domain | Description |
 |:---:|:---|
@@ -47,6 +56,11 @@ Backgrounds are specialized things that characters did before becoming vampires.
 | OnlyFans foot model | You earn some extra money from posting *spicy* feet pics online. |
 | Manifestation coach | You have an Instagram account about the (not so ancient) art of *manifesting* things in your life by asking the universe for them. |
 | Redpilled podcaster | You have a podcast about how to cultivate a true **REDPILL** lifestyle. So what if some snowflakes feel offended? |
-| Psychology streamer | You twitch stream daily teaching people psychology techniques on how to ignore the societal collapse around them and practice *mindfulness* instead. |
+| Twitter politician | You are able to produce the longest and most eloquent series of tweets on current events, delivering hot takes with the conviction of someone who’s just discovered Wikipedia. |
 | Video essayist | You create 9h videos on subjects very few people are interested in order to prove a point that you saw on Reddit once and though it was interesting. |
-| New Language Enthusiast | You like messing around with computers and other electronic devices. The sad part is you are the person that keeps saying that others should use that new pre 1.0 programming language that has all the features they absolutely **want**, but their current language does not have. |
+| Tech Bro | When it comes to solving menial problems that no one cares about, you are a true *Disruptor*. You measure your success in lines of code and VC funding, and despite a questionable work-life balance, you are convinced you're just one all-nighter away from becoming the next tech messiah.|
+
+### Advancement
+
+0->1 1 pt
+1->2 2pt
