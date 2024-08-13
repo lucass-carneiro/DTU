@@ -4,16 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "993238050c62abd9",
+        "id": "5fec93510c2abf95",
         "type": "tabs",
         "children": [
           {
-            "id": "0bfa50db3e6358e5",
+            "id": "49e44413270fad8f",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "gdd_chapters/0002_gameplay.md",
+                "file": "gdd_chapters/0003_core_mechanics.md",
                 "mode": "source",
                 "source": true
               }
@@ -86,7 +86,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "gdd_chapters/0002_gameplay.md",
+                "file": "gdd_chapters/0003_core_mechanics.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -103,7 +103,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "gdd_chapters/0002_gameplay.md",
+                "file": "gdd_chapters/0003_core_mechanics.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -126,7 +126,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "gdd_chapters/0002_gameplay.md"
+                "file": "gdd_chapters/0003_core_mechanics.md"
               }
             }
           }
@@ -146,13 +146,19 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "0bfa50db3e6358e5",
+  "active": "49e44413270fad8f",
   "lastOpenFiles": [
+    "gdd_chapters/9998_pc.md",
+    "templates/wiki_page.md",
+    "gdd_chapters/0002_gameplay.md",
+    "gdd_chapters/9999_references.md",
+    "design/templates/wiki_entry.md",
+    "templates",
+    "gdd_chapters/0003_core_mechanics.md",
     "pandoc/DTU_Design_Doc.pdf",
     "pandoc/compile.py~",
     "pandoc/templates/pdf.latex~",
     "pandoc/templates/pdf.latex",
-    "gdd_chapters/0002_gameplay.md",
     "gdd_chapters/0001_design_pillars.md",
     "design/wiki/vassal.md",
     "design/wiki/the_unbound.md",
@@ -172,18 +178,12 @@
     "design/story/setting_and_themes.md",
     "design/story/main_plot.md",
     "design/system/the_system.md",
-    "design/templates/wiki_entry.md",
     "design/templates/dw7pt.md",
-    "design/templates/dated_entry.md",
-    "design/templates/character_sheet.md",
-    "design/characters/npcs.md",
     "design/plot_canvas/canvas.canvas",
     "design/wiki",
     "design/system",
     "design/story",
     "design/templates",
-    "design/plot_canvas",
-    "design/characters",
-    "design"
+    "design/plot_canvas"
   ]
 }

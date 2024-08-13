@@ -96,7 +96,7 @@ Skills inform the base actions that players take during gameplay.
 
 ### Domains
 
-In DTU, Domains will be player archetypes according to the table below:
+In DTU, Domains will be player backgrounds according to the table below:
 
 | Domain | Description |
 |:---:|:---|
